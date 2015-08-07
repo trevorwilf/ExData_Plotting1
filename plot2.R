@@ -8,11 +8,18 @@ library(ggplot2)
 library(lubridate)
 library(scales)
 library(grid)
+
+# adjust to your own working directory
 setwd("C:\\github\\ExData_Plotting1")
 
-# get data set may need to uncomment
-#download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "powerconsumption.zip")
-#unzip("powerconsumption.zip")
+# get data set
+if(!file.exists("household_power_consumption.txt")){
+  if(!file.exists("exdata-data-household_power_consumption.zip")){
+    download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "powerconsumption.zip")
+    unzip("powerconsumption.zip")
+  }
+  unzip("powerconsumption.zip")
+}
 
 # cleanup dataset
 powertable <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", na.strings = "?", skipNul = TRUE, blank.lines.skip = TRUE)
