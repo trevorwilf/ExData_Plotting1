@@ -31,32 +31,47 @@ powertable$Time <- as.Date(powertable$Time, format= "%H:%M:%S")
 powersubset <- as.data.frame(subset(powertable, Date >= "2007-02-01" & Date <= "2007-02-02"))
 
 # create graph
-ggplot(data=powersubset) +
-  geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_1, label = "Sub_metering_1", colour = "Sub_metering_1")) +
-  geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_2, label = "Sub_metering_2", colour = "Sub_metering_2")) +
-  geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_3, label = "Sub_metering_3", colour = "Sub_metering_3")) +                 
-  scale_color_manual(values=c("black", "red", "blue")) +
-  ylab("Energy Sub Metering") +
-  xlab("") +
-  scale_x_datetime(labels = date_format("%a"),
-    breaks = date_breaks("1 day")) +
-  theme(
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(), 
-        panel.background = element_blank(),
-        panel.border = element_rect(colour = "black", fill = NA),
-        axis.text.x = element_text(vjust = 0, hjust = .5, colour = "black", size = 13),
-        axis.text.y = element_text(vjust = 0, hjust = .5, angle = 90, colour = "black", size = 13),
-        axis.ticks.length = unit(.4, "cm"),
-        axis.title.y=element_text(vjust=2),
-        legend.position = c(1, 1), 
-        legend.justification = c(.92, .85),
-        legend.title=element_blank(),
-        legend.background = element_rect(colour = "black", fill = NA),
-        legend.key = element_rect(fill = NA),
-        legend.key.height=unit(.4,"cm")
-        )
+# Graph using base system
+par(oma=c(0,0,1,0), mar=c(2,3,1,1), mgp=c(2,1,0), cex.axis=.75, cex.lab=.75)
+plot(powersubset$DateTime, powersubset$Sub_metering_1, 
+     type="l",
+     ylab="Energy sub metering", xlab="")
+  lines(powersubset$DateTime, powersubset$Sub_metering_2, col='Red')
+  lines(powersubset$DateTime, powersubset$Sub_metering_3, col='Blue')
+  legend("topright", col=c("black", "red", "blue"), lty=1, 
+         pt.cex = 1, cex = .75,
+       legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
 
 #export png file
 dev.copy(png, file="plot3.png", height=480, width=480)
 dev.off()
+
+
+####################################
+# disregard this section
+# misread instructions thought I could do this in ggplot leaving this here but it is commented out and not used in the script
+#ggplot(data=powersubset) +
+#  geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_1, label = "Sub_metering_1", colour = "Sub_metering_1")) +
+#  geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_2, label = "Sub_metering_2", colour = "Sub_metering_2")) +
+#  geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_3, label = "Sub_metering_3", colour = "Sub_metering_3")) +                 
+#  scale_color_manual(values=c("black", "red", "blue")) +
+#  ylab("Energy Sub Metering") +
+#  xlab("") +
+#  scale_x_datetime(labels = date_format("%a"),
+#    breaks = date_breaks("1 day")) +
+#  theme(
+#        panel.grid.major = element_blank(), 
+#        panel.grid.minor = element_blank(), 
+#        panel.background = element_blank(),
+#        panel.border = element_rect(colour = "black", fill = NA),
+#        axis.text.x = element_text(vjust = 0, hjust = .5, colour = "black", size = 13),
+#        axis.text.y = element_text(vjust = 0, hjust = .5, angle = 90, colour = "black", size = 13),
+#        axis.ticks.length = unit(.4, "cm"),
+#        axis.title.y=element_text(vjust=2),
+#        legend.position = c(1, 1), 
+#        legend.justification = c(.92, .85),
+#        legend.title=element_blank(),
+#        legend.background = element_rect(colour = "black", fill = NA),
+#        legend.key = element_rect(fill = NA),
+#        legend.key.height=unit(.4,"cm")
+#        )

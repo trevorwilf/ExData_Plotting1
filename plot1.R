@@ -22,7 +22,11 @@ powertable$Date <- as.Date(powertable$Date, format= "%d/%m/%Y")
 powersubset <- as.data.frame(subset(powertable, Date >= "2007-02-01" & Date <= "2007-02-02"))
 
 # create histogram
-hist(powersubset$Global_active_power, col = "red", xlab = "Global Active Power (kilowatts)", main = "Global Active Power")
+par(oma=c(0,0,1,0), mar=c(4,4,2,1), mgp=c(2,1,0), cex.axis=.75, cex.lab=.75)
+hist(powersubset$Global_active_power, 
+     col = "red", 
+     xlab = "Global Active Power (kilowatts)", 
+     main = "Global Active Power")
 
 #export png file
 dev.copy(png, file="plot1.png", height=480, width=480)
