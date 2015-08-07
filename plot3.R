@@ -1,3 +1,8 @@
+#########################
+## Author: Trevor
+## Date: 8/06/2015
+#########################
+# dependencies
 library(dplyr)
 library(ggplot2)
 library(lubridate)
@@ -9,14 +14,15 @@ setwd("C:\\github\\ExData_Plotting1")
 #download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "powerconsumption.zip")
 #unzip("powerconsumption.zip")
 
+# cleanup dataset
 powertable <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", na.strings = "?", skipNul = TRUE, blank.lines.skip = TRUE)
 powertable <- mutate(powertable, DateTime = as.POSIXct(paste(powertable$Date, powertable$Time), format="%d/%m/%Y %H:%M:%S"))
 powertable$Date <- as.Date(powertable$Date, format= "%d/%m/%Y")
 powertable$Time <- as.Date(powertable$Time, format= "%H:%M:%S")
 
-
 powersubset <- as.data.frame(subset(powertable, Date >= "2007-02-01" & Date <= "2007-02-02"))
 
+# create graph
 ggplot(data=powersubset) +
   geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_1, label = "Sub_metering_1", colour = "Sub_metering_1")) +
   geom_line(aes(x=powersubset$DateTime, y=powersubset$Sub_metering_2, label = "Sub_metering_2", colour = "Sub_metering_2")) +
@@ -43,3 +49,6 @@ ggplot(data=powersubset) +
         legend.key.height=unit(.4,"cm")
         )
 
+#export png file
+dev.copy(png, file="plot3.png", height=480, width=480)
+dev.off()

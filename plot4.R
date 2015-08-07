@@ -1,4 +1,9 @@
-install.packages("gridExtra")
+#########################
+## Author: Trevor
+## Date: 8/06/2015
+#########################
+# dependencies
+#install.packages("gridExtra")
 library(dplyr)
 library(ggplot2)
 library(lubridate)
@@ -7,18 +12,20 @@ library(grid)
 library(gridExtra)
 library(reshape2)
 setwd("C:\\github\\ExData_Plotting1")
+
 # get data set
 #download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "powerconsumption.zip")
 #unzip("powerconsumption.zip")
 
+# cleanup dataset
 powertable <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", na.strings = "?", skipNul = TRUE, blank.lines.skip = TRUE)
 powertable <- mutate(powertable, DateTime = as.POSIXct(paste(powertable$Date, powertable$Time), format="%d/%m/%Y %H:%M:%S"))
 powertable$Date <- as.Date(powertable$Date, format= "%d/%m/%Y")
 powertable$Time <- as.Date(powertable$Time, format= "%H:%M:%S")
 
-
 powersubset <- as.data.frame(subset(powertable, Date >= "2007-02-01" & Date <= "2007-02-02"))
 
+# create four graphs
 q1 <- ggplot(data=powersubset, aes(x=powersubset$DateTime, y=powersubset$Voltage, group=1)) +
   geom_line() +
   ylab("Voltage") +
@@ -99,4 +106,9 @@ q4 <- ggplot(data=powersubset, aes(x=powersubset$DateTime, y=powersubset$Global_
     #axis.title.x=element_text(vjust=-.8, size = 13)
   )
 
+# combine four graphs
 grid.arrange(q2, q1, q3, q4)
+
+#export png file
+dev.copy(png, file="plot4.png", height=480, width=480)
+dev.off()

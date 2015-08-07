@@ -1,24 +1,28 @@
+#########################
+## Author: Trevor
+## Date: 8/06/2015
+#########################
+# dependencies
 library(dplyr)
 library(ggplot2)
 library(lubridate)
 library(scales)
 library(grid)
 setwd("C:\\github\\ExData_Plotting1")
-# get data set
+
+# get data set may need to uncomment
 #download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip", "powerconsumption.zip")
 #unzip("powerconsumption.zip")
 
+# cleanup dataset
 powertable <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", na.strings = "?", skipNul = TRUE, blank.lines.skip = TRUE)
 powertable <- mutate(powertable, DateTime = as.POSIXct(paste(powertable$Date, powertable$Time), format="%d/%m/%Y %H:%M:%S"))
 powertable$Date <- as.Date(powertable$Date, format= "%d/%m/%Y")
 powertable$Time <- as.Date(powertable$Time, format= "%H:%M:%S")
 
-
 powersubset <- as.data.frame(subset(powertable, Date >= "2007-02-01" & Date <= "2007-02-02"))
 
-
-#plot(y = powersubset$Global_active_power, x = powersubset$DateTime)
-
+# create graph
 ggplot(data=powersubset, aes(x=powersubset$DateTime, y=powersubset$Global_active_power, group=1)) +
   geom_line() +
   ylab("Global Active Power (kilowatts)") +
@@ -36,3 +40,6 @@ ggplot(data=powersubset, aes(x=powersubset$DateTime, y=powersubset$Global_active
         axis.title.y=element_text(vjust=2, size = 13)
         )
 
+#export png file
+dev.copy(png, file="plot2.png", height=480, width=480)
+dev.off()
